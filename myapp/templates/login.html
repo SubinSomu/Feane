@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Feane - Login</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;600&display=swap" rel="stylesheet" />
+  <style>
+    * {
+      box-sizing: border-box;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      background: url('https://images.unsplash.com/photo-1551024709-8f23befc6e14?auto=format&fit=crop&w=1740&q=80') no-repeat center center fixed;
+      background-size: cover;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+    }
+
+    body::before {
+      content: "";
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0,0,0,0.55);
+      z-index: 0;
+    }
+
+    .login-container {
+      position: relative;
+      z-index: 1;
+      background: rgba(255, 255, 255, 0.12);
+      backdrop-filter: blur(15px);
+      border-radius: 20px;
+      padding: 40px 30px;
+      width: 360px;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      text-align: center;
+      color: #fff;
+    }
+
+    .login-container h2 {
+      font-weight: 600;
+      font-size: 28px;
+      margin-bottom: 20px;
+      text-shadow: 1px 1px 3px #000;
+    }
+
+    .food-icons {
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+      margin-bottom: 25px;
+    }
+
+    .food-icons img {
+      width: 60px;
+      height: 60px;
+      border-radius: 12px;
+      object-fit: cover;
+      box-shadow: 0 0 12px #ffcc33;
+      border: 2px solid #fff;
+      background: #fff;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      cursor: default;
+    }
+
+    .food-icons img:hover {
+      transform: scale(1.15);
+      box-shadow: 0 0 16px #ff6b6b, 0 0 30px #ffcc33;
+    }
+
+    input[type="text"],
+    input[type="password"] {
+      width: 100%;
+      padding: 12px 16px;
+      margin: 12px 0;
+      border: none;
+      border-radius: 10px;
+      background: rgba(255, 255, 255, 0.9);
+      color: #333;
+      font-size: 16px;
+      outline: none;
+      transition: box-shadow 0.3s ease;
+    }
+
+    input::placeholder {
+      color: #999;
+    }
+
+    input[type="text"]:focus,
+    input[type="password"]:focus {
+      box-shadow: 0 0 8px #ffb347;
+    }
+
+    .btn {
+      width: 100%;
+      padding: 14px;
+      margin-top: 15px;
+      border: none;
+      border-radius: 10px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      background: linear-gradient(45deg, #ff6347, #ffb347);
+      color: #fff;
+      transition: transform 0.2s ease;
+      box-shadow: 0 4px 12px rgba(255, 99, 71, 0.6);
+      text-decoration: none;
+      display: inline-block;
+      text-align: center;
+    }
+
+    .btn:hover {
+      transform: scale(1.05);
+      box-shadow: 0 6px 20px rgba(255, 107, 107, 0.8);
+    }
+
+    .signup-btn {
+      background: transparent;
+      border: 2px solid #fff;
+      margin-top: 12px;
+      color: #fff;
+    }
+
+    .signup-btn:hover {
+      background: rgba(255, 255, 255, 0.25);
+      box-shadow: 0 0 12px #fff;
+      transform: scale(1.05);
+    }
+
+    p {
+      margin-top: 20px;
+      font-size: 14px;
+      color: #ddd;
+    }
+
+    @media (max-width: 400px) {
+      .login-container {
+        width: 90%;
+        padding: 30px 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="login-container" role="main" aria-label="Feane Login Form">
+    <h2>Welcome to <span style="color:#ffcc33;">Feane</span></h2>
+    <div class="food-icons" aria-label="Popular food items">
+      <img src="https://cdn-icons-png.flaticon.com/512/3132/3132693.png" alt="Pizza" />
+      <img src="https://cdn-icons-png.flaticon.com/512/1046/1046784.png" alt="Burger" />
+      <img src="https://cdn-icons-png.flaticon.com/512/5787/5787943.png" alt="Pasta" />
+      <img src="https://cdn-icons-png.flaticon.com/512/3075/3075977.png" alt="Fries" />
+    </div>
+    
+    <!-- SAFE FORM with CSRF -->
+    <form method="POST" novalidate>
+      {% csrf_token %} 
+      <input
+        type="text"
+        name="username"
+        placeholder="Username"
+        aria-label="Username"
+        required
+        autocomplete="username"
+      />
+      <input
+        type="password"
+        name="password"
+        placeholder="Password"
+        aria-label="Password"
+        required
+        autocomplete="current-password"
+      />
+      <button class="btn" type="submit">Login</button>
+      <a href="{% url 'myapp:signup' %}" class="btn signup-btn" role="button">Sign Up</a>
+    </form>
+    
+    <p>New to Feane? Join the flavor fest today!</p>
+    
+    {% if messages %}
+      {% for message in messages %}
+        <p style="color: red;">{{ message }}</p>
+      {% endfor %}
+    {% endif %}
+    
+  </div>
+</body>
+</html>

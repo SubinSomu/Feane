@@ -1,0 +1,132 @@
+{% extends 'dash/index.html' %}
+{% block content %}
+  <style>
+    .form-wrapper {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+    }
+
+    .glass-form {
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 20px;
+      padding: 30px;
+      width: 100%;
+      max-width: 400px;
+      backdrop-filter: blur(10px);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+      color: white;
+    }
+
+    .glass-form h2 {
+      text-align: center;
+      margin-bottom: 25px;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 8px;
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    input[type="text"],
+    input[type="number"],
+    input[type="file"],
+    textarea {
+      width: 100%;
+      padding: 10px;
+      border: none;
+      border-radius: 10px;
+      background: rgba(255, 255, 255, 0.2);
+      color: white;
+      font-size: 14px;
+      outline: none;
+      resize: vertical;
+    }
+
+    input[type="file"] {
+      cursor: pointer;
+    }
+
+    #preview {
+      display: none;
+      width: 100%;
+      border-radius: 10px;
+      margin-top: 10px;
+      margin-bottom: 20px;
+    }
+
+    .submit-link {
+      display: block;
+      text-align: center;
+      padding: 12px;
+      border-radius: 10px;
+      background-color: #00c9a7;
+      color: white;
+      font-weight: bold;
+      font-size: 16px;
+      cursor: pointer;
+      text-decoration: none;
+      transition: background-color 0.3s ease;
+    }
+
+    .submit-link:hover {
+      background-color: #00b18a;
+    }
+
+    ::placeholder {
+      color: rgba(255, 255, 255, 0.7);
+    }
+  </style>
+
+  <div class="form-wrapper">
+    <form class="glass-form" action="{% url 'myapp1:add_food' %}" method="POST" enctype="multipart/form-data">
+      {% csrf_token %}
+      <h2>🍔 Add Food Item</h2>
+
+      <div class="form-group">
+        <label for="name">Food Name</label>
+        <input type="text" id="name" name="name" placeholder="e.g., Margherita Pizza" value="{{ form.name.value|default_if_none:'' }}" required>
+      </div>
+
+      <div class="form-group">
+        <label for="price">Price (₹)</label>
+        <input type="number" id="price" name="price" placeholder="e.g., 199" value="{{ form.price.value|default_if_none:'' }}" min="0" required>
+      </div>
+
+      <div class="form-group">
+        <label for="description">Description</label>
+        <textarea id="description" name="description" placeholder="Write a short description..." rows="3">{{ form.description.value|default_if_none:'' }}</textarea>
+      </div>
+
+      <div class="form-group">
+        <label for="image">Upload Image</label>
+        <input type="file" id="image" name="image" accept="image/*" onchange="previewImage(event)">
+        <img id="preview" src="#" alt="Preview">
+      </div>
+
+      <button class="submit-link" type="submit">➕ Add Food</button>
+    </form>
+  </div>
+
+  <script>
+    function previewImage(event) {
+      const reader = new FileReader();
+      reader.onload = function () {
+        const preview = document.getElementById('preview');
+        preview.src = reader.result;
+        preview.style.display = 'block';
+      };
+      if (event.target.files[0]) {
+        reader.readAsDataURL(event.target.files[0]);
+      }
+    }
+  </script>
+{% endblock %}

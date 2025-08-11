@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Your Cart</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: url('https://images.unsplash.com/photo-1493770348161-369560ae357d?auto=format&fit=crop&w=1950&q=80') no-repeat center center fixed;
+      background-size: cover;
+      backdrop-filter: blur(5px);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+
+    .cart-container {
+      background: rgba(255, 255, 255, 0.95);
+      border-radius: 16px;
+      padding: 30px;
+      width: 90%;
+      max-width: 900px;
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.2);
+    }
+
+    .cart-header {
+      font-size: 28px;
+      font-weight: bold;
+      color: #333;
+      margin-bottom: 20px;
+      text-align: center;
+    }
+
+    .nav-button {
+      display: inline-block;
+      padding: 10px 20px;
+      margin-bottom: 20px;
+      font-size: 14px;
+      background: linear-gradient(45deg, #6a11cb, #2575fc);
+      color: white;
+      border: none;
+      border-radius: 30px;
+      text-decoration: none;
+      font-weight: bold;
+      box-shadow: 0 4px 12px rgba(38, 132, 255, 0.3);
+      transition: background 0.3s ease;
+    }
+
+    .nav-button:hover {
+      background: linear-gradient(45deg, #5e10c9, #1e6be9);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 20px;
+    }
+
+    th, td {
+      padding: 12px;
+      text-align: center;
+      border-bottom: 1px solid #ddd;
+    }
+
+    th {
+      background-color: #f7f7f7;
+      color: #333;
+    }
+
+    .price, .subtotal {
+      color: #e67e22;
+      font-weight: bold;
+    }
+
+    .total-section {
+      text-align: right;
+      font-size: 18px;
+      font-weight: bold;
+      color: #333;
+    }
+
+    .total-amount {
+      color: #e67e22;
+      font-size: 20px;
+    }
+
+    .action-btn {
+      border: none;
+      color: white;
+      padding: 6px 12px;
+      border-radius: 5px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .delete-btn { background-color: #e74c3c; }
+    .inc-btn    { background-color: #2ecc71; }
+    .dec-btn    { background-color: #3498db; }
+
+    .checkout-btn {
+      display: block;
+      width: 100%;
+      padding: 12px;
+      margin-top: 20px;
+      font-size: 16px;
+      background: linear-gradient(45deg, #ffc107, #ff9800);
+      border: none;
+      border-radius: 30px;
+      color: #000;
+      font-weight: bold;
+      cursor: pointer;
+      box-shadow: 0 4px 10px rgba(255, 152, 0, 0.3);
+      transition: background 0.3s ease;
+    }
+
+    .checkout-btn:hover {
+      background: linear-gradient(45deg, #ffb300, #ff6f00);
+    }
+  </style>
+</head>
+<body>
+
+<div class="cart-container">
+  <a href="{% url 'myapp:home' %}" class="nav-button">🔙 Back to Menu</a>
+
+  <div class="cart-header">Hello, {{ username }} 👋<br>Here's what you added:</div>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Product</th>
+        <th>Price</th>
+        <th>Quantity</th>
+        <th>Subtotal</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for item in cart_items %}
+      <tr>
+        <td>{{ item.product.name }}</td>
+        <td class="price">₹{{ item.product.price }}</td>
+        <td>
+          <form method="post" action="{% url 'myapp:decrease_quantity' item.product.id %}" style="display:inline;">
+            {% csrf_token %}
+            <button type="submit" class="action-btn dec-btn">➖</button>
+          </form>
+          <span style="margin: 0 10px;">{{ item.quantity }}</span>
+          <form method="post" action="{% url 'myapp:increase_quantity' item.product.id %}" style="display:inline;">
+            {% csrf_token %}
+            <button type="submit" class="action-btn inc-btn">➕</button>
+          </form>
+        </td>
+        <td class="subtotal">₹{{ item.subtotal }}</td>
+        <td>
+          <form method="post" action="{% url 'myapp:delete_cart_item' item.product.id %}">
+            {% csrf_token %}
+            <button type="submit" class="action-btn delete-btn">🗑 Delete</button>
+          </form>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+  <div class="total-section">
+    Total: <span class="total-amount">₹{{ total }}</span>
+  </div>
+
+  <button class="checkout-btn">Checkout</button>
+</div>
+
+</body>
+</html>

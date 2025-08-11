@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Checkout</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    /* Add your full styles here, same as previous response */
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: url('https://images.unsplash.com/photo-1604152135912-04a022e2366c') no-repeat center center fixed;
+      background-size: cover;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+
+    .checkout-container {
+      background: rgba(255, 255, 255, 0.96);
+      border-radius: 16px;
+      padding: 30px;
+      width: 90%;
+      max-width: 800px;
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.2);
+    }
+
+    h2 {
+      text-align: center;
+      margin-bottom: 20px;
+      color: #2c3e50;
+    }
+
+    .user-info, .cart-summary {
+      margin-bottom: 30px;
+    }
+
+    .info-label {
+      font-weight: bold;
+      color: #333;
+    }
+
+    .info-value {
+      margin-left: 10px;
+      color: #555;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    th, td {
+      padding: 12px;
+      text-align: center;
+      border-bottom: 1px solid #ddd;
+    }
+
+    th {
+      background-color: #f2f2f2;
+    }
+
+    .price {
+      font-weight: bold;
+      color: #e67e22;
+    }
+
+    .place-order-btn {
+      display: block;
+      width: 100%;
+      padding: 14px;
+      font-size: 16px;
+      background: linear-gradient(45deg, #27ae60, #2ecc71);
+      border: none;
+      border-radius: 30px;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background 0.3s ease;
+      box-shadow: 0 4px 12px rgba(46, 204, 113, 0.4);
+    }
+
+    .place-order-btn:hover {
+      background: linear-gradient(45deg, #219150, #27ae60);
+    }
+
+  </style>
+</head>
+<body>
+  <div class="checkout-container">
+    <h2>Checkout Details</h2>
+
+    <div class="user-info">
+      <p><span class="info-label">Name:</span> <span class="info-value">{{ user.username }} </span></p>
+      <p><span class="info-label">Email:</span> <span class="info-value">{{ user.email }}</span></p>
+      <p><span class="info-label">Phone:</span> <span class="info-value">{{ user.phone }}</span></p>
+      <p><span class="info-label">Address:</span> <span class="info-value">{{ user.address }}</span></p>
+    </div>
+
+    <div class="cart-summary">
+      <table>
+        <thead>
+          <tr>
+            <th>Product</th>
+            <th>Qty</th>
+            <th>Price</th>
+            <th>Subtotal</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for item in cart_items %}
+          <tr>
+            <td>{{ item.product.name }}</td>
+            <td>{{ item.quantity }}</td>
+            <td class="price">₹{{ item.product.price }}</td>
+            <td class="price">₹{{ item.subtotal }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+
+      {% if discount and discount > 0 %}
+      <div style="text-align:right; margin-top: 10px;">
+        <span class="info-label">Discount:</span>
+        <span class="price" style="color: red;">-₹{{ discount }}</span>
+      </div>
+      {% endif %}
+
+      <div style="text-align:right; margin-top: 10px;">
+        <span class="info-label">Total:</span>
+        <span class="price">₹{{ total }}</span>
+      </div>
+    </div>
+
+    <form method="post" action="#">
+      {% csrf_token %}
+      <button type="submit" class="place-order-btn">Place Order</button>
+    </form>
+  </div>
+</body>
+</html>

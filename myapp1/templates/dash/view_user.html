@@ -1,0 +1,113 @@
+{% extends 'dash/index.html' %}
+{% block content %}
+
+<style>
+  body {
+    background: #ecf0f3;
+  }
+
+  .user-table-container {
+    max-width: 1100px;
+    margin: 50px auto;
+    padding: 30px;
+    background: rgba(255, 255, 255, 0.75);
+    backdrop-filter: blur(10px);
+    border-radius: 20px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    overflow-x: auto;
+  }
+
+  .user-table-container h2 {
+    text-align: center;
+    color: #1f2d3d;
+    font-size: 28px;
+    margin-bottom: 25px;
+    font-weight: 600;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-family: 'Segoe UI', sans-serif;
+    font-size: 15px;
+  }
+
+  thead {
+    background: #f0f5f9;
+  }
+
+  th, td {
+    padding: 14px 20px;
+    text-align: left;
+    border-bottom: 1px solid #e0e0e0;
+  }
+
+  th {
+    color: #34495e;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+  }
+
+  tr {
+    transition: background 0.2s ease;
+  }
+
+  tr:hover {
+    background-color: #f7faff;
+    cursor: pointer;
+  }
+
+  .no-users {
+    text-align: center;
+    padding: 30px;
+    font-size: 18px;
+    color: #999;
+    font-style: italic;
+  }
+
+  @media (max-width: 768px) {
+    th, td {
+      padding: 10px;
+    }
+
+    .user-table-container {
+      padding: 20px;
+    }
+
+    .user-table-container h2 {
+      font-size: 24px;
+    }
+  }
+</style>
+
+<div class="user-table-container">
+  <h2>👤 Registered Users</h2>
+  {% if users %}
+    <table>
+      <thead>
+        <tr>
+          <th>#ID</th>
+          <th>👨‍💼 Username</th>
+          <th>📧 Email</th>
+          <th>📞 Phone</th>
+          <th>🏠 Address</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for user in users %}
+          <tr>
+            <td>{{ user.id }}</td>
+            <td>{{ user.username }}</td>
+            <td>{{ user.email }}</td>
+            <td>{{ user.phone }}</td>
+            <td>{{ user.address }}</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  {% else %}
+    <div class="no-users">No users found.</div>
+  {% endif %}
+</div>
+
+{% endblock %}

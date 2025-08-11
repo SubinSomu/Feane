@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>User Profile - Feane</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <style>
+    :root {
+      --primary: #FF6B6B;
+      --secondary: #FFA3A3;
+      --accent: #FFD166;
+      --dark: #2B2D42;
+      --light: #F8F9FA;
+      --success: #06D6A0;
+      --info: #118AB2;
+      --warning: #FFD166;
+      --danger: #EF476F;
+      --shadow-sm: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+      --shadow-md: 0 4px 6px rgba(0,0,0,0.1), 0 1px 3px rgba(0,0,0,0.08);
+      --shadow-lg: 0 10px 25px rgba(0,0,0,0.1), 0 5px 10px rgba(0,0,0,0.05);
+      --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    body {
+      min-height: 100vh;
+      background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), 
+                  url('https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=1600&q=80') no-repeat center center fixed;
+      background-size: cover;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 2rem;
+      color: var(--light);
+      line-height: 1.6;
+    }
+
+    .profile-container {
+      width: 100%;
+      max-width: 900px;
+      background: rgba(255, 255, 255, 0.08);
+      backdrop-filter: blur(20px);
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: var(--shadow-lg);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      animation: fadeIn 0.8s ease-out forwards;
+      opacity: 0;
+    }
+
+    @keyframes fadeIn {
+      to { opacity: 1; transform: translateY(0); }
+      from { opacity: 0; transform: translateY(20px); }
+    }
+
+    .profile-header {
+      background: linear-gradient(135deg, var(--primary), var(--danger));
+      padding: 2.5rem;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .profile-header::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+      animation: rotate 15s linear infinite;
+    }
+
+    @keyframes rotate {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+
+    .avatar {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      border: 3px solid var(--light);
+      object-fit: cover;
+      margin-bottom: 1rem;
+      box-shadow: var(--shadow-md);
+      position: relative;
+      z-index: 1;
+    }
+
+    .profile-header h2 {
+      font-size: 1.8rem;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+      position: relative;
+      z-index: 1;
+    }
+
+    .profile-header p {
+      opacity: 0.9;
+      font-size: 0.95rem;
+      position: relative;
+      z-index: 1;
+    }
+
+    .profile-content {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+      padding: 2rem;
+    }
+
+    @media (max-width: 768px) {
+      .profile-content {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .section {
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 15px;
+      padding: 1.5rem;
+      box-shadow: var(--shadow-sm);
+      transition: var(--transition);
+    }
+
+    .section:hover {
+      transform: translateY(-5px);
+      box-shadow: var(--shadow-md);
+    }
+
+    .section h3 {
+      font-size: 1.2rem;
+      margin-bottom: 1.5rem;
+      color: var(--accent);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .section h3 i {
+      font-size: 1.1rem;
+    }
+
+    .form-group {
+      margin-bottom: 1.2rem;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-size: 0.9rem;
+      color: rgba(255, 255, 255, 0.8);
+    }
+
+    input, textarea {
+      width: 100%;
+      padding: 0.8rem 1rem;
+      border-radius: 10px;
+      border: none;
+      background: rgba(255, 255, 255, 0.9);
+      color: var(--dark);
+      font-size: 0.95rem;
+      transition: var(--transition);
+    }
+
+    input:focus, textarea:focus {
+      outline: none;
+      box-shadow: 0 0 0 3px rgba(255, 107, 107, 0.3);
+      transform: translateY(-2px);
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      padding: 0.8rem 1.5rem;
+      border-radius: 10px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: var(--transition);
+      border: none;
+      text-decoration: none;
+      width: 100%;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--primary), var(--danger));
+      color: white;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-3px);
+      box-shadow: var(--shadow-md);
+    }
+
+    .btn-secondary {
+      background: rgba(255, 255, 255, 0.1);
+      color: white;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .btn-secondary:hover {
+      background: rgba(255, 255, 255, 0.2);
+    }
+
+    .btn-logout {
+      background: rgba(239, 71, 111, 0.2);
+      color: var(--danger);
+      border: 1px solid var(--danger);
+    }
+
+    .btn-logout:hover {
+      background: rgba(239, 71, 111, 0.3);
+    }
+
+    .order-list {
+      list-style: none;
+    }
+
+    .order-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.8rem 0;
+      border-bottom: 1px dashed rgba(255, 255, 255, 0.1);
+    }
+
+    .order-item:last-child {
+      border-bottom: none;
+    }
+
+    .order-item span:first-child {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .order-item .price {
+      font-weight: 500;
+      color: var(--accent);
+    }
+
+    .status-badge {
+      display: inline-block;
+      padding: 0.2rem 0.5rem;
+      border-radius: 20px;
+      font-size: 0.7rem;
+      font-weight: 500;
+      text-transform: uppercase;
+    }
+
+    .status-delivered {
+      background: rgba(6, 214, 160, 0.2);
+      color: var(--success);
+    }
+
+    .status-pending {
+      background: rgba(255, 209, 102, 0.2);
+      color: var(--warning);
+    }
+
+    .status-cancelled {
+      background: rgba(239, 71, 111, 0.2);
+      color: var(--danger);
+    }
+
+    .coupon-success {
+      margin-top: 1rem;
+      padding: 0.8rem;
+      background: rgba(6, 214, 160, 0.2);
+      border-radius: 10px;
+      color: var(--success);
+      font-size: 0.9rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      animation: slideIn 0.5s ease-out;
+    }
+
+    @keyframes slideIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .password-toggle {
+      position: relative;
+    }
+
+    .password-toggle i {
+      position: absolute;
+      right: 1rem;
+      top: 50%;
+      transform: translateY(-50%);
+      cursor: pointer;
+      color: var(--dark);
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .stat-card {
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 10px;
+      padding: 1rem;
+      text-align: center;
+      transition: var(--transition);
+    }
+
+    .stat-card:hover {
+      transform: translateY(-3px);
+      background: rgba(255, 255, 255, 0.1);
+    }
+
+    .stat-card .number {
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: var(--accent);
+      margin-bottom: 0.3rem;
+    }
+
+    .stat-card .label {
+      font-size: 0.7rem;
+      opacity: 0.8;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .footer {
+      padding: 1.5rem;
+      text-align: center;
+      font-size: 0.8rem;
+      opacity: 0.7;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+    }
+  </style>
+</head>
+<body>
+  <div class="profile-container">
+    <div class="profile-header">
+      <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="User Avatar" class="avatar" />
+      <h2>Welcome, {{request.user}}!</h2>
+      <p>Premium Member since June 2023</p>
+    </div>
+
+    <div class="profile-content">
+      <div class="left-column">
+        <!-- Account Info Section -->
+        <div class="section">
+          <h3><i class="fas fa-user-circle"></i> Account Information</h3>
+          <form method="post" action="{% url 'myapp:update_user' %}">
+              {% csrf_token %}
+            <div class="form-group">
+              <label for="name">Full Name</label>
+              <input type="text" id="name" name="name" placeholder="John Doe" value="{{request.user.username}}" required />
+            </div>
+            <div class="form-group">
+              <label for="email">Email Address</label>
+              <input type="email" id="email" name="email" placeholder="john@example.com" value="{{request.user.email}}" required />
+            </div>
+            <div class="form-group">
+              <label for="phone">Phone Number</label>
+              <input type="tel" id="phone" name="phone" placeholder="+1234567890" value="{{request.user.phone}}" required />
+            </div>
+            <div class="form-group">
+              <label for="address">Delivery Address</label>
+              <textarea id="address" name="address" rows="3" placeholder="123 Food Street, Restaurant City">{{request.user.address}}</textarea>
+            </div>
+            <button class="btn btn-primary" type="submit">
+              <i class="fas fa-save"></i> Update Profile
+            </button>
+          </form>
+        </div>
+
+        <!-- Order History -->
+        <div class="section">
+          <h3><i class="fas fa-history"></i> Recent Orders</h3>
+          <ul class="order-list">
+            <li class="order-item">
+              <span><i class="fas fa-pizza-slice"></i> Pepperoni Pizza</span>
+              <span class="price">$12.99</span>
+            </li>
+            <li class="order-item">
+              <span><i class="fas fa-hamburger"></i> Double Cheeseburger</span>
+              <span class="price">$9.50</span>
+            </li>
+            <li class="order-item">
+              <span><i class="fas fa-french-fries"></i> Large Fries</span>
+              <span class="price">$3.99</span>
+            </li>
+            <li class="order-item">
+              <span><i class="fas fa-wine-glass-alt"></i> Soft Drink</span>
+              <span class="price">$2.50</span>
+            </li>
+          </ul>
+          <a href="#" class="btn btn-secondary" style="margin-top: 1rem;">
+            <i class="fas fa-list"></i> View All Orders
+          </a>
+        </div>
+      </div>
+
+      <div class="right-column">
+        <!-- Stats Section -->
+        <div class="section">
+          <h3><i class="fas fa-chart-line"></i> Your Stats</h3>
+          <div class="stats">
+            <div class="stat-card">
+              <div class="number">24</div>
+              <div class="label">Orders</div>
+            </div>
+            <div class="stat-card">
+              <div class="number">$186</div>
+              <div class="label">Total Spent</div>
+            </div>
+            <div class="stat-card">
+              <div class="number">8</div>
+              <div class="label">Coupons Used</div>
+            </div>
+          </div>
+        </div>
+
+        
+        <div class="section">
+          <h3><i class="fas fa-lock"></i> Security</h3>
+          <form method="POST" action="{% url 'myapp:update_password' %}">
+            {% csrf_token %}
+            <div class="form-group password-toggle">
+              <label for="old_password">Current Password</label>
+              <input type="password" id="old_password" name="old_password" required />
+              <i class="fas fa-eye" onclick="togglePassword('old_password', this)"></i>
+            </div>
+            <div class="form-group password-toggle">
+              <label for="new_password">New Password</label>
+              <input type="password" id="new_password" name="new_password" required />
+              <i class="fas fa-eye" onclick="togglePassword('new_password', this)"></i>
+            </div>
+            <div class="form-group password-toggle">
+              <label for="confirm_password">Confirm Password</label>
+              <input type="password" id="confirm_password" name="confirm_password" required />
+              <i class="fas fa-eye" onclick="togglePassword('confirm_password', this)"></i>
+            </div>
+            <button class="btn btn-primary" type="submit">
+              <i class="fas fa-key"></i> Change Password
+            </button>
+          </form>
+        </div>
+
+        
+        <div class="section">
+          <h3><i class="fas fa-tag"></i> Redeem Coupon</h3>
+          <form method="POST" action="/redeem-coupon">
+            <div class="form-group">
+              <label for="coupon">Enter Coupon Code</label>
+              <input type="text" id="coupon" name="coupon" placeholder="FOODIE50" />
+            </div>
+            <button class="btn btn-primary" type="submit">
+              <i class="fas fa-gift"></i> Redeem Coupon
+            </button>
+          </form>
+          <div class="coupon-success" style="display: none;">
+            <i class="fas fa-check-circle"></i> Coupon applied successfully! 15% discount on your next order.
+          </div>
+        </div>
+
+       
+        <div class="section">
+          <a href="{% url 'myapp:log_out' %}" class="btn btn-logout">
+            <i class="fas fa-sign-out-alt"></i> Logout
+          </a>
+
+        </div>
+      </div>
+    </div>
+
+    <div class="footer">
+      <p>© 2023 Feane. All rights reserved. | <a href="#" style="color: var(--accent);">Privacy Policy</a></p>
+    </div>
+  </div>
+
+  <script>
+ 
+    function togglePassword(id, icon) {
+      const input = document.getElementById(id);
+      if (input.type === "password") {
+        input.type = "text";
+        icon.classList.replace('fa-eye', 'fa-eye-slash');
+      } else {
+        input.type = "password";
+        icon.classList.replace('fa-eye-slash', 'fa-eye');
+      }
+    }
+
+   
+    document.querySelector('form[action="/redeem-coupon"]').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const successMsg = document.querySelector('.coupon-success');
+      successMsg.style.display = 'flex';
+      setTimeout(() => {
+        successMsg.style.display = 'none';
+      }, 5000);
+    });
+
+
+    function logout() {
+      
+      alert('You have been logged out successfully!');
+      window.location.href = '/login';
+    }
+
+    // Animation on load
+    document.addEventListener('DOMContentLoaded', () => {
+      const sections = document.querySelectorAll('.section');
+      sections.forEach((section, index) => {
+        setTimeout(() => {
+          section.style.opacity = '1';
+          section.style.transform = 'translateY(0)';
+        }, index * 100);
+      });
+    });
+  </script>
+</body>
+</html>

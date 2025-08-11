@@ -1,0 +1,123 @@
+{% extends 'dash/index.html' %}
+{% block content %}
+  <style>
+    .coupon-wrapper {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+    }
+
+    .coupon-form {
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(10px);
+      padding: 30px;
+      border-radius: 16px;
+      color: white;
+      width: 100%;
+      max-width: 420px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    }
+
+    .coupon-form h2 {
+      text-align: center;
+      margin-bottom: 24px;
+      font-size: 22px;
+      color: #fff;
+    }
+
+    .form-group {
+      margin-bottom: 18px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 6px;
+      font-weight: 500;
+      color: #ddd;
+    }
+
+    input[type="text"],
+    input[type="number"],
+    input[type="date"] {
+      width: 100%;
+      padding: 10px 12px;
+      border: 1px solid #888;
+      border-radius: 8px;
+      background-color: rgba(255, 255, 255, 0.15);
+      color: #fff;
+      font-size: 14px;
+      outline: none;
+    }
+
+    input::placeholder {
+      color: rgba(255, 255, 255, 0.6);
+    }
+
+    .btn-submit {
+      width: 100%;
+      padding: 12px;
+      background-color: #00c9a7;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-weight: bold;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    .btn-submit:hover {
+      background-color: #00b18a;
+    }
+
+    .message {
+      text-align: center;
+      margin-bottom: 10px;
+      font-weight: bold;
+    }
+  </style>
+
+  <div class="coupon-wrapper">
+    <form class="coupon-form" method="post">
+      {% csrf_token %}
+      <h2>🎟️ Add Coupon</h2>
+
+      {% if messages %}
+        <div class="message">
+          {% for message in messages %}
+            {% if message.tags == 'error' %}
+              <p style="color: red;">{{ message }}</p>
+            {% else %}
+              <p style="color: lightgreen;">{{ message }}</p>
+            {% endif %}
+          {% endfor %}
+        </div>
+      {% endif %}
+
+      <div class="form-group">
+        <label for="coupon_code">Coupon Code</label>
+        <input type="text" name="coupon_code" id="coupon_code" placeholder="e.g. NEWUSER25" required>
+      </div>
+
+      <div class="form-group">
+        <label for="discount_percent">Discount (%)</label>
+        <input type="number" name="discount_percent" id="discount_percent" placeholder="e.g. 25" min="1" max="100" required>
+      </div>
+
+      <div class="form-group">
+        <label for="start_date">Start Date</label>
+        <input type="date" name="start_date" id="start_date" required>
+      </div>
+
+      <div class="form-group">
+        <label for="end_date">End Date</label>
+        <input type="date" name="end_date" id="end_date" required>
+      </div>
+
+      <button type="submit" class="btn-submit">Add Coupon</button>
+    </form>
+  </div>
+{% endblock %}
+  
